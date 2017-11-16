@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('agular-the-complete-guide App', () => {
+describe('angular-the-complete-guide App', () => {
   let page: AppPage;
 
   beforeEach(() => {
