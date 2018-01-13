@@ -11,15 +11,32 @@ import { ShoppingListService } from '../shopping-list.service';
 })
 export class ShoppingEditComponent implements OnInit {
   @ViewChild('f') shoppingListForm: NgForm;
+  editMode = false;
+  private editedItemIndex: number;
+  private editedItem: Ingredient;
 
   constructor(private shoppingListService: ShoppingListService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.shoppingListService.startedEditing.subscribe((index: number) => {
+      this.editMode = true;
+      this.editedItemIndex = index;
+      this.editedItem = this.shoppingListService.getIngredient(this.editedItemIndex);
+      this.shoppingListForm.setValue({
+        name: this.editedItem.name,
+        amount: this.editedItem.amount
+      });
+    });
+  }
 
   onAddItem() {
-    const name = this.shoppingListForm.value.name;
-    const amount = this.shoppingListForm.value.amount;
-    this.shoppingListService.addIngredient(new Ingredient(name, amount));
+    const value = this.shoppingListForm.value;
+    const newIngredient = new Ingredient(value.name, value.amount);
+    if (this.editMode) {
+      this.shoppingListService.updateIngredient(this.editedItemIndex, newIngredient);
+    } else {
+      this.shoppingListService.addIngredient(newIngredient);
+    }
   }
 
   onClear() {
