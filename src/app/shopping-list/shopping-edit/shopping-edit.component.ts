@@ -29,7 +29,7 @@ export class ShoppingEditComponent implements OnInit {
     });
   }
 
-  onAddItem() {
+  onSubmit() {
     const value = this.shoppingListForm.value;
     const newIngredient = new Ingredient(value.name, value.amount);
     if (this.editMode) {
@@ -37,6 +37,8 @@ export class ShoppingEditComponent implements OnInit {
     } else {
       this.shoppingListService.addIngredient(newIngredient);
     }
+    this.editMode = false;
+    this.shoppingListForm.reset();
   }
 
   onClear() {
