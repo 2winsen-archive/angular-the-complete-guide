@@ -18,33 +18,25 @@ export class ShoppingListService {
 
   addIngredient(newIngredient: Ingredient) {
     this.ingredients.push(newIngredient);
+    this.changed();
+  }
+
+  private changed() {
     this.ingredientsChanged.next(this.getIngredients().slice());
   }
 
   updateIngredient(index: number, newIngredient: Ingredient) {
     this.ingredients[index] = newIngredient;
-    this.ingredientsChanged.next(this.getIngredients().slice());
+    this.changed();
   }
 
-  deleteIngredient(ingredient: Ingredient) {
-    this.ingredients = this.ingredients.reduce((acc, curr) => {
-      if (curr.name === ingredient.name) {
-        if (ingredient.amount < curr.amount) {
-          curr.amount -= ingredient.amount;
-          acc.push(curr);
-        } else {
-          ingredient.amount -= curr.amount;
-        }
-      } else {
-        acc.push(curr);
-      }
-      return acc;
-    }, []);
-    this.ingredientsChanged.next(this.getIngredients());
+  deleteIngredient(index: number) {
+    this.ingredients.splice(index, 1);
+    this.changed();
   }
 
   addIngredients(ingredients: Ingredient[]) {
     this.ingredients.push(...ingredients);
-    this.ingredientsChanged.next(this.getIngredients());
+    this.changed();
   }
 }

@@ -48,6 +48,7 @@ export class ShoppingEditComponent implements OnInit {
 
   onDelete() {
     const value = this.shoppingListForm.value;
-    this.shoppingListService.deleteIngredient(new Ingredient(value.name, value.amount));
+    this.shoppingListService.deleteIngredient(this.editedItemIndex);
+    this.onClear();
   }
 }

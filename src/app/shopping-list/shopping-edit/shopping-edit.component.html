@@ -30,7 +30,8 @@
             [disabled]="f.invalid">{{ editMode ? 'Update': 'Add' }}</button>
           <button type="button"
             class="btn btn-danger"
-            (click)="onDelete()">Delete</button>
+            (click)="onDelete()"
+            *ngIf="editMode">Delete</button>
           <button type="button"
             class="btn btn-primary"
             (click)="onClear()">Clear</button>
