@@ -21,7 +21,7 @@ export class RecipeDetailComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(p => {
       const recipeIndex = +p['id'];
-      this.recipe = this.recipeService.getRecipeByIndex(recipeIndex);
+      this.recipe = this.recipeService.getRecipe(recipeIndex);
       if (!this.recipe.name) {
         this.router.navigate(['/']);
       }

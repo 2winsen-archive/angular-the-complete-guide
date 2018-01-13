@@ -22,7 +22,7 @@ export class RecipeService {
   ];
   constructor(private shoppingListService: ShoppingListService) {}
 
-  getRecipeByIndex(index: number) {
+  getRecipe(index: number) {
     return { ...this.recipes[index] };
   }
 
