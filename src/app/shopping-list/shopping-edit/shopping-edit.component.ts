@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { Ingredient } from '../../shared/ingredient.model';
@@ -9,24 +10,26 @@ import { ShoppingListService } from '../shopping-list.service';
   templateUrl: './shopping-edit.component.html',
   styleUrls: ['./shopping-edit.component.css']
 })
-export class ShoppingEditComponent implements OnInit {
+export class ShoppingEditComponent implements OnInit, OnDestroy {
   @ViewChild('f') shoppingListForm: NgForm;
   editMode = false;
   private editedItemIndex: number;
   private editedItem: Ingredient;
+  private startedEditingSubscription: Subscription;
 
-  constructor(private shoppingListService: ShoppingListService) {}
+  constructor(private shoppingListService: ShoppingListService) { }
 
   ngOnInit() {
-    this.shoppingListService.startedEditing.subscribe((index: number) => {
-      this.editMode = true;
-      this.editedItemIndex = index;
-      this.editedItem = this.shoppingListService.getIngredient(this.editedItemIndex);
-      this.shoppingListForm.setValue({
-        name: this.editedItem.name,
-        amount: this.editedItem.amount
+    this.startedEditingSubscription = this.shoppingListService.startedEditing
+      .subscribe((index: number) => {
+        this.editMode = true;
+        this.editedItemIndex = index;
+        this.editedItem = this.shoppingListService.getIngredient(this.editedItemIndex);
+        this.shoppingListForm.setValue({
+          name: this.editedItem.name,
+          amount: this.editedItem.amount
+        });
       });
-    });
   }
 
   onSubmit() {
@@ -50,5 +53,9 @@ export class ShoppingEditComponent implements OnInit {
     const value = this.shoppingListForm.value;
     this.shoppingListService.deleteIngredient(this.editedItemIndex);
     this.onClear();
+  }
+
+  ngOnDestroy(): void {
+    this.startedEditingSubscription.unsubscribe();
   }
 }
