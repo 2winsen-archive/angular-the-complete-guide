@@ -22,7 +22,7 @@ export class ShoppingListService {
   }
 
   private changed() {
-    this.ingredientsChanged.next(this.getIngredients().slice());
+    this.ingredientsChanged.next(this.getIngredients());
   }
 
   updateIngredient(index: number, newIngredient: Ingredient) {
