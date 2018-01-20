@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
 
 import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
 import { Recipe } from './recipe.model';
-import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class RecipeService {
@@ -31,6 +31,11 @@ export class RecipeService {
 
   getRecipes() {
     return this.recipes.slice();
+  }
+
+  setRecipes(recipe: Recipe[]) {
+    this.recipes = recipe.slice();
+    this.changed();
   }
 
   addRecipe(newRecipe: Recipe) {
