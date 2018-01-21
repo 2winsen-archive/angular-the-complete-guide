@@ -1,3 +1,4 @@
+import { AuthService } from './auth/auth.service';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
@@ -47,7 +48,8 @@ import { SigninComponent } from './auth/signin/signin.component';
   providers: [
     ShoppingListService,
     RecipeService,
-    DataStorageService
+    DataStorageService,
+    AuthService
   ],
   bootstrap: [AppComponent]
 })
