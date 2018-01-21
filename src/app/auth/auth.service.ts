@@ -1,11 +1,11 @@
 import 'rxjs/Rx';
 
 import * as firebase from 'firebase';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
 
 export class AuthService {
-  private authenticated = new Subject<boolean>();
+  private authenticated = new BehaviorSubject<boolean>(false);
   private authenticated$ = this.authenticated.asObservable();
 
   signupUser(email: string, password: string) {
@@ -43,7 +43,9 @@ export class AuthService {
   }
 
   logout() {
-    firebase.auth().signOut()
-      .then(() => this.authenticated.next(false));
+    return firebase.auth().signOut()
+      .then(() => {
+        this.authenticated.next(false);
+      });
   }
 }

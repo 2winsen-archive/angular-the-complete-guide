@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from './../auth/auth.service';
 import { Component, OnInit } from '@angular/core';
@@ -17,7 +18,8 @@ export class HeaderComponent implements OnInit {
   constructor(
     private dataStorageService: DataStorageService,
     private recipeService: RecipeService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -55,7 +57,8 @@ export class HeaderComponent implements OnInit {
   }
 
   onLogout() {
-    this.authService.logout();
+    this.authService.logout()
+      .then(() => this.router.navigate(['/signin']));
   }
 
 }

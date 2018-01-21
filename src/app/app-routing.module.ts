@@ -1,11 +1,12 @@
-import { SigninComponent } from './auth/signin/signin.component';
-import { SignupComponent } from './auth/signup/signup.component';
-import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AuthGuard } from './auth/auth-guard.service';
+import { SigninComponent } from './auth/signin/signin.component';
+import { SignupComponent } from './auth/signup/signup.component';
 import { EmptyRecipeDetailComponent } from './recipes/empty-recipe-detail/empty-recipe-detail.component';
 import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.component';
+import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 import { RecipesComponent } from './recipes/recipes.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 
@@ -16,9 +17,9 @@ const appRoutes: Routes = [
     component: RecipesComponent,
     children: [
       { path: '', component: EmptyRecipeDetailComponent },
-      { path: 'new', component: RecipeEditComponent },
+      { path: 'new', component: RecipeEditComponent, canActivate: [AuthGuard] },
       { path: ':id', component: RecipeDetailComponent },
-      { path: ':id/edit', component: RecipeEditComponent }
+      { path: ':id/edit', component: RecipeEditComponent, canActivate: [AuthGuard] }
     ]
   },
   { path: 'shopping-list', component: ShoppingListComponent },
