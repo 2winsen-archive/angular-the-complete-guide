@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs/Observable';
+import { AuthService } from './../auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 
 import { Recipe } from './../recipes/recipe.model';
@@ -14,7 +16,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private dataStorageService: DataStorageService,
-    private recipeService: RecipeService
+    private recipeService: RecipeService,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -49,6 +52,10 @@ export class HeaderComponent implements OnInit {
         console.log(error);
         this.error();
       });
+  }
+
+  onLogout() {
+    this.authService.logout();
   }
 
 }
