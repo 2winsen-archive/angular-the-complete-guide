@@ -1,3 +1,4 @@
+import { Configs } from './../configs';
 import 'rxjs/Rx';
 
 import { Injectable } from '@angular/core';
@@ -9,18 +10,16 @@ import { Recipe } from './../recipes/recipe.model';
 @Injectable()
 export class DataStorageService {
 
-  private static readonly SERVER_URL = '';
-
   constructor(
     private http: Http
   ) { }
 
   storeRecipes(recipes: Recipe[]): Observable<Response> {
-    return this.http.put(`${DataStorageService.SERVER_URL}/recipes.json`, recipes);
+    return this.http.put(`${Configs.FIREBASE_URL}/recipes.json`, recipes);
   }
 
   fetchRecipes(): Observable<Recipe[]> {
-    return this.http.get(`${DataStorageService.SERVER_URL}/recipes.json`)
+    return this.http.get(`${Configs.FIREBASE_URL}/recipes.json`)
       .map((response: Response) => response.json())
       .filter((recipes: Recipe[]) => !!recipes)
       .map((recipes: Recipe[]) =>
