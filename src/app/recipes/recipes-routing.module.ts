@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from '../auth/auth-guard.service';
 import { EmptyRecipeDetailComponent } from './empty-recipe-detail/empty-recipe-detail.component';
@@ -7,7 +7,7 @@ import { RecipeDetailComponent } from './recipe-detail/recipe-detail.component';
 import { RecipeEditComponent } from './recipe-edit/recipe-edit.component';
 import { RecipesComponent } from './recipes.component';
 
-const recipesRoutes = [
+const recipesRoutes: Routes = [
   {
     path: 'recipes',
     component: RecipesComponent,
@@ -26,6 +26,4 @@ const recipesRoutes = [
     RouterModule
   ]
 })
-export class RecipesRoutingModule {
-
-}
+export class RecipesRoutingModule { }
