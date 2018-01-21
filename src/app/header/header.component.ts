@@ -36,13 +36,19 @@ export class HeaderComponent implements OnInit {
 
   onSaveData() {
     this.dataStorageService.storeRecipes(this.recipeService.getRecipes())
-      .subscribe(() => this.success(), () => this.error());
+      .subscribe(() => this.success(), (error) => {
+        console.log(error);
+        this.error();
+      });
   }
 
   onFetchData() {
-    this.dataStorageService.fetchRecipes()
+    this.dataStorageService.getRecipes()
       .do((recipes: Recipe[]) => this.recipeService.setRecipes(recipes))
-      .subscribe(() => this.success(), () => this.error());
+      .subscribe(() => this.success(), (error) => {
+        console.log(error);
+        this.error();
+      });
   }
 
 }

@@ -1,3 +1,4 @@
+import { AuthService } from './../auth/auth.service';
 import { Configs } from './../configs';
 import 'rxjs/Rx';
 
@@ -11,25 +12,32 @@ import { Recipe } from './../recipes/recipe.model';
 export class DataStorageService {
 
   constructor(
-    private http: Http
+    private http: Http,
+    private authService: AuthService,
   ) { }
 
   storeRecipes(recipes: Recipe[]): Observable<Response> {
-    return this.http.put(`${Configs.FIREBASE_URL}/recipes.json`, recipes);
+    return Observable.fromPromise(this.authService.getToken())
+      .flatMap(
+      (token: string) => this.http.put(`${Configs.FIREBASE_URL}/recipes.json?auth=${token}`, recipes)
+      );
   }
 
-  fetchRecipes(): Observable<Recipe[]> {
-    return this.http.get(`${Configs.FIREBASE_URL}/recipes.json`)
-      .map((response: Response) => response.json())
-      .filter((recipes: Recipe[]) => !!recipes)
-      .map((recipes: Recipe[]) =>
-        recipes
-          .reduce((acc, curr) => {
-            if (!curr.ingredients) {
-              curr.ingredients = [];
-            }
-            return acc.concat(curr);
-          }, [])
+  getRecipes(): Observable<Recipe[]> {
+    return Observable.fromPromise(this.authService.getToken())
+      .flatMap((token: string) =>
+        this.http.get(`${Configs.FIREBASE_URL}/recipes.json?auth=${token}`)
+          .map((response: Response) => response.json())
+          .filter((recipes: Recipe[]) => !!recipes)
+          .map((recipes: Recipe[]) =>
+            recipes
+              .reduce((acc, curr) => {
+                if (!curr.ingredients) {
+                  curr.ingredients = [];
+                }
+                return acc.concat(curr);
+              }, [])
+          )
       );
   }
 

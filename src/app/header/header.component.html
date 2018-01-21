@@ -10,9 +10,9 @@
         <li routerLinkActive="active"><a routerLink="/shopping-list">Shopping List</a></li>
       </ul>      
       <ul class="nav navbar-nav navbar-right">
-        <li><a routerLink="/signup">Register</a></li>
-        <li><a routerLink="/signin">Login</a></li>
         <li *ngIf="status"><a style="font-weight: bold" [ngStyle]="{'color': (status === 'SUCCESS') ? '#32CD32' : 'red' }">{{status}}</a></li>
+        <li><a routerLink="/signup">Register</a></li>
+        <li><a routerLink="/signin">Login</a></li>        
         <li class="dropdown" appDropdown>
           <a style="cursor: pointer" class="dropdown-toggle" role="button">Manage <span class="caret"></span></a>
           <ul class="dropdown-menu">
