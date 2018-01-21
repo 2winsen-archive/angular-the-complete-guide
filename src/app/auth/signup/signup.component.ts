@@ -8,6 +8,7 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
+  error = '';
 
   constructor(
     private authService: AuthService
@@ -19,7 +20,11 @@ export class SignupComponent implements OnInit {
   onSignup(form: NgForm) {
     const email = form.value.email;
     const password = form.value.password;
-    this.authService.signupUser(email, password);
+    this.authService.signupUser(email, password)
+      .catch(error => {
+        this.error = error,
+        setTimeout(() => this.error = '', 3000);
+      });
   }
 
 }
