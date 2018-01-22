@@ -12,7 +12,6 @@ import { HomeComponent } from './home/home.component';
 import { RecipeService } from './recipes/recipe.service';
 import { DataStorageService } from './shared/data-storage.service';
 import { SharedModule } from './shared/shared.module';
-import { ShoppingListModule } from './shopping-list/shopping-list.module';
 import { ShoppingListService } from './shopping-list/shopping-list.service';
 
 @NgModule({
@@ -26,7 +25,6 @@ import { ShoppingListService } from './shopping-list/shopping-list.service';
     AppRoutingModule,
     HttpModule,
     SharedModule,
-    ShoppingListModule,
     AuthModule
   ],
   providers: [
