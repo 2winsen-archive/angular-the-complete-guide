@@ -1,11 +1,10 @@
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { AuthService } from './../auth/auth.service';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-import { Recipe } from './../recipes/recipe.model';
-import { RecipeService } from './../recipes/recipe.service';
-import { DataStorageService } from './../shared/data-storage.service';
+import { AuthService } from '../../auth/auth.service';
+import { Recipe } from '../../recipes/recipe.model';
+import { RecipeService } from '../../recipes/recipe.service';
+import { DataStorageService } from '../../shared/data-storage.service';
 
 @Component({
   selector: 'app-header',
