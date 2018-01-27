@@ -17,29 +17,22 @@ export class DataStorageService {
   ) { }
 
   storeRecipes(recipes: Recipe[]): Observable<any> {
-    return Observable.fromPromise(this.authService.getToken())
-      .flatMap(
-      (token: string) => this.httpClient.request(
-        new HttpRequest('PUT', `${Configs.FIREBASE_URL}/recipes.json?auth=${token}`, recipes, { reportProgress: true })
-      )
-      // (token: string) => this.httpClient.put<Recipe[]>(`${Configs.FIREBASE_URL}/recipes.json?auth=${token}`, recipes)
-      );
+    return this.httpClient.request(
+      new HttpRequest('PUT', `${Configs.FIREBASE_URL}/recipes.json`, recipes, { reportProgress: true })
+    );
   }
 
   getRecipes(): Observable<Recipe[]> {
-    return Observable.fromPromise(this.authService.getToken())
-      .flatMap((token: string) =>
-        this.httpClient.get<Recipe[]>(`${Configs.FIREBASE_URL}/recipes.json?auth=${token}`)
-          .filter((recipes) => !!recipes)
-          .map((recipes) =>
-            recipes
-              .reduce((acc, curr) => {
-                if (!curr.ingredients) {
-                  curr.ingredients = [];
-                }
-                return acc.concat(curr);
-              }, [])
-          )
+    return this.httpClient.get<Recipe[]>(`${Configs.FIREBASE_URL}/recipes.json`)
+      .filter((recipes) => !!recipes)
+      .map((recipes) =>
+        recipes
+          .reduce((acc, curr) => {
+            if (!curr.ingredients) {
+              curr.ingredients = [];
+            }
+            return acc.concat(curr);
+          }, [])
       );
   }
 
