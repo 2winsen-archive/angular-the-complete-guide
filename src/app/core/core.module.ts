@@ -1,3 +1,4 @@
+import { LoggingInterceptor } from './../shared/logging.interceptor';
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -30,7 +31,8 @@ import { HomeComponent } from './home/home.component';
     RecipeService,
     DataStorageService,
     AuthService,
-    { provide: HTTP_INTERCEPTORS, useClass: ParamsInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ParamsInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LoggingInterceptor, multi: true }
   ]
 })
 export class CoreModule {

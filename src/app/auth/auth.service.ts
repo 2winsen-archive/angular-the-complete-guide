@@ -1,5 +1,3 @@
-import 'rxjs/Rx';
-
 import * as firebase from 'firebase';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';

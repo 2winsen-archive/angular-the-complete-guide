@@ -11,24 +11,12 @@ import { HttpUserEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { AuthService } from './../auth/auth.service';
-import 'rxjs/add/observable/fromPromise';
-import 'rxjs/add/operator/mergeMap';
-
 @Injectable()
-export class ParamsInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService) { }
-
+export class LoggingInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler)
     : Observable<HttpSentEvent | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any>> {
-    console.log('intercepted!', req);
-    return Observable.fromPromise(this.authService.getToken())
-      .mergeMap((token: string) => {
-        const clonedReq = req.clone({
-          params: req.params.set('auth', token)
-        });
-        return next.handle(clonedReq);
-      });
+    return next.handle(req)
+      .do(event => console.log('Logging interceptor', event));
   }
 
 }
