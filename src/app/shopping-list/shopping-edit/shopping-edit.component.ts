@@ -15,7 +15,6 @@ import * as ShoppingListActions from './../store/shopping-list.actions';
 export class ShoppingEditComponent implements OnInit, OnDestroy {
   @ViewChild('f') shoppingListForm: NgForm;
   editMode = false;
-  private editedItemIndex: number;
   private editedItem: Ingredient;
   private startedEditingSubscription: Subscription;
 
@@ -28,7 +27,6 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
       .subscribe((state) => {
         if (state.editedIngredientIndex > -1) {
           this.editMode = true;
-          this.editedItemIndex = state.editedIngredientIndex;
           this.editedItem = state.editedIngredient;
           this.shoppingListForm.setValue({
             name: this.editedItem.name,
@@ -65,5 +63,6 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.startedEditingSubscription.unsubscribe();
+    this.store.dispatch(new ShoppingListActions.StopEdit());
   }
 }
