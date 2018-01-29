@@ -1,3 +1,6 @@
+import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/operator/mergeMap';
+
 import {
   HttpHandler,
   HttpHeaderResponse,
@@ -12,8 +15,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { AuthService } from './../auth/auth.service';
-import 'rxjs/add/observable/fromPromise';
-import 'rxjs/add/operator/mergeMap';
 
 @Injectable()
 export class ParamsInterceptor implements HttpInterceptor {

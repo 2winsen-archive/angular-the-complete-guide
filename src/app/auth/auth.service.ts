@@ -1,13 +1,19 @@
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import * as firebase from 'firebase';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
 
+import * as fromApp from './../store/app.reducers';
+import * as AuthActions from './store/auth.actions';
+
+@Injectable()
 export class AuthService {
-  private authenticated = new BehaviorSubject<boolean>(false);
-  private authenticated$ = this.authenticated.asObservable();
+  constructor(
+    private store: Store<fromApp.AppState>
+  ) { }
 
   signupUser(email: string, password: string) {
-    return firebase.auth().createUserWithEmailAndPassword(email, password);
+    return firebase.auth().createUserWithEmailAndPassword(email, password)
+      .then(() => this.store.dispatch(new AuthActions.Signup()));
   }
 
   signinUser(email: string, password: string) {
@@ -16,7 +22,7 @@ export class AuthService {
         firebase.auth().onAuthStateChanged((currentUser: firebase.User) => {
           if (currentUser) {
             currentUser.getToken()
-              .then(() => this.authenticated.next(true));
+              .then(() => this.store.dispatch(new AuthActions.Signin()));
           }
         });
       });
@@ -26,24 +32,20 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       firebase.auth().onAuthStateChanged((currentUser: firebase.User) => {
         if (currentUser) {
-          this.authenticated.next(true);
+          this.store.dispatch(new AuthActions.StoredTokenIsValid());
           resolve(currentUser.getToken());
         } else {
-          this.authenticated.next(false);
+          this.store.dispatch(new AuthActions.StoredTokenIsInvalid());
           resolve(null);
         }
       });
     });
   }
 
-  isAuthenticated(): Observable<boolean> {
-    return this.authenticated$;
-  }
-
   logout() {
     return firebase.auth().signOut()
       .then(() => {
-        this.authenticated.next(false);
+        this.store.dispatch(new AuthActions.Logout());
       });
   }
 }
