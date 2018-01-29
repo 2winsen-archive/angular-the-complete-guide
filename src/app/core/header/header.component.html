@@ -10,11 +10,11 @@
         <li routerLinkActive="active"><a routerLink="/shopping-list">Shopping List</a></li>
       </ul>      
       <ul class="nav navbar-nav navbar-right">
-        <ng-template [ngIf]="!(authService.isAuthenticated() | async)">
+        <ng-template [ngIf]="!(authState$ | async).authenticated">
           <li><a routerLink="/signup">Register</a></li>
           <li><a routerLink="/signin">Login</a></li>
         </ng-template>        
-        <ng-template [ngIf]="(authService.isAuthenticated() | async)">
+        <ng-template [ngIf]="(authState$ | async).authenticated">
           <li><a style="cursor: pointer" (click)="onLogout()">Logout</a></li>
           <li *ngIf="status"><a style="font-weight: bold" [ngStyle]="{'color': (status === 'SUCCESS') ? '#32CD32' : 'red' }">{{status}}</a></li>
           <li class="dropdown" appDropdown>

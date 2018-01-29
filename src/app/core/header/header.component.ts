@@ -2,11 +2,15 @@ import 'rxjs/add/operator/do';
 
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
 
 import { AuthService } from '../../auth/auth.service';
 import { Recipe } from '../../recipes/recipe.model';
 import { RecipeService } from '../../recipes/recipe.service';
 import { DataStorageService } from '../../shared/data-storage.service';
+import * as fromAuth from './../../auth/store/auth.reducers';
+import * as fromApp from './../../store/app.reducers';
 
 @Component({
   selector: 'app-header',
@@ -15,15 +19,18 @@ import { DataStorageService } from '../../shared/data-storage.service';
 })
 export class HeaderComponent implements OnInit {
   status = '';
+  authState$: Observable<fromAuth.State>;
 
   constructor(
     private dataStorageService: DataStorageService,
     private recipeService: RecipeService,
     public authService: AuthService,
     private router: Router,
+    private store: Store<fromApp.AppState>,
   ) { }
 
   ngOnInit() {
+    this.authState$ = this.store.select('auth');
   }
 
   private success() {
