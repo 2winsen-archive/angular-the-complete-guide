@@ -12,18 +12,23 @@ import {
 import { HttpResponse } from '@angular/common/http';
 import { HttpUserEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { AuthService } from './../auth/auth.service';
+import * as fromAuth from './../auth/store/auth.reducers';
+import * as fromApp from './../store/app.reducers';
 
 @Injectable()
 export class ParamsInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService) { }
+  constructor(
+    private store: Store<fromApp.AppState>
+  ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler)
     : Observable<HttpSentEvent | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any>> {
     console.log('intercepted!', req);
-    return Observable.fromPromise(this.authService.getToken())
+    return this.store.select('auth')
+      .map((state: fromAuth.State) => state.token)
       .switchMap((token: string) => {
         const clonedReq = req.clone({
           params: req.params.set('auth', token)

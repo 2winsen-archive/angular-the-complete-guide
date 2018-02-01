@@ -1,4 +1,6 @@
 import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
 
@@ -33,6 +35,8 @@ export class AuthEffects {
       firebase.auth().onAuthStateChanged((currentUser: firebase.User) => {
         if (currentUser) {
           observer.next(currentUser);
+        } else {
+          observer.error('no current user');
         }
       });
     }))
@@ -40,12 +44,53 @@ export class AuthEffects {
     .map((token: string) => {
       this.router.navigate(['/']);
       return {
-        type: AuthActions.SIGNIN
+        type: AuthActions.SIGNIN,
+        payload: token
+      };
+    })
+    .catch(error => this.failedToGetCurentUser());
+
+  @Effect()
+  logout = this.actions$
+    .ofType(AuthActions.TRY_LOGOUT)
+    .switchMap(() => Observable.fromPromise(firebase.auth().signOut()))
+    .map((token: string) => {
+      this.router.navigate(['/signin']);
+      return {
+        type: AuthActions.LOGOUT
       };
     });
+
+  @Effect()
+  tryGetToken = this.actions$
+    .ofType(AuthActions.TRY_GET_TOKEN)
+    .switchMap(() => Observable.create((observer: Observer<any>) =>
+      firebase.auth().onAuthStateChanged((currentUser: firebase.User) => {
+        if (currentUser) {
+          observer.next(currentUser);
+        } else {
+          observer.error('no current user');
+        }
+      })
+    ))
+    .switchMap((currentUser: firebase.User) => Observable.fromPromise(currentUser.getIdToken()))
+    .map((token: string) => {
+      return {
+        type: AuthActions.STORED_TOKEN_IS_VALID,
+        payload: token
+      };
+    })
+    .catch(error => this.failedToGetCurentUser());
 
   constructor(
     private actions$: Actions,
     private router: Router
   ) { }
+
+  failedToGetCurentUser() {
+    this.router.navigate(['/signin']);
+    return Observable.of({
+      type: AuthActions.STORED_TOKEN_IS_INVALID,
+    });
+  }
 }

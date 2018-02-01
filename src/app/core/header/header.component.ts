@@ -5,10 +5,10 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { AuthService } from '../../auth/auth.service';
 import { Recipe } from '../../recipes/recipe.model';
 import { RecipeService } from '../../recipes/recipe.service';
 import { DataStorageService } from '../../shared/data-storage.service';
+import * as AuthActions from './../../auth/store/auth.actions';
 import * as fromAuth from './../../auth/store/auth.reducers';
 import * as fromApp from './../../store/app.reducers';
 
@@ -24,7 +24,6 @@ export class HeaderComponent implements OnInit {
   constructor(
     private dataStorageService: DataStorageService,
     private recipeService: RecipeService,
-    public authService: AuthService,
     private router: Router,
     private store: Store<fromApp.AppState>,
   ) { }
@@ -70,8 +69,7 @@ export class HeaderComponent implements OnInit {
   }
 
   onLogout() {
-    this.authService.logout()
-      .then(() => this.router.navigate(['/signin']));
+    this.store.dispatch(new AuthActions.TryLogout());
   }
 
 }

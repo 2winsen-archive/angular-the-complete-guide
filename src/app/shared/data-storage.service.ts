@@ -5,7 +5,6 @@ import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { AuthService } from './../auth/auth.service';
 import { Configs } from './../configs';
 import { Recipe } from './../recipes/recipe.model';
 
@@ -13,8 +12,7 @@ import { Recipe } from './../recipes/recipe.model';
 export class DataStorageService {
 
   constructor(
-    private httpClient: HttpClient,
-    private authService: AuthService,
+    private httpClient: HttpClient
   ) { }
 
   storeRecipes(recipes: Recipe[]): Observable<any> {

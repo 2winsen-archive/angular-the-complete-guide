@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
-import { AuthService } from '../auth/auth.service';
 import { AppRoutingModule } from './../app-routing.module';
 import { RecipeService } from './../recipes/recipe.service';
 import { DataStorageService } from './../shared/data-storage.service';
@@ -28,7 +27,6 @@ import { HomeComponent } from './home/home.component';
   providers: [
     RecipeService,
     DataStorageService,
-    AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: ParamsInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoggingInterceptor, multi: true }
   ]

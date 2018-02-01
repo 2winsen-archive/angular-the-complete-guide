@@ -4,7 +4,9 @@ export const TRY_SIGNUP = 'TRY_SIGNUP';
 export const SIGNUP = 'SIGNUP';
 export const TRY_SIGNIN = 'TRY_SIGNIN';
 export const SIGNIN = 'SIGNIN';
+export const TRY_LOGOUT = 'TRY_LOGOUT';
 export const LOGOUT = 'LOGOUT';
+export const TRY_GET_TOKEN = 'TRY_GET_TOKEN';
 export const STORED_TOKEN_IS_VALID = 'STORED_TOKEN_IS_VALID';
 export const STORED_TOKEN_IS_INVALID = 'STORED_TOKEN_IS_INVALID';
 
@@ -24,18 +26,28 @@ export class TrySignin implements Action {
 
 export class Signin implements Action {
   readonly type: string = SIGNIN;
+  constructor(public payload: string) { }
 }
 
 export class StoredTokenIsValid implements Action {
   readonly type: string = STORED_TOKEN_IS_VALID;
+  constructor(public payload: string) { }
 }
 
 export class StoredTokenIsInvalid implements Action {
   readonly type: string = STORED_TOKEN_IS_INVALID;
 }
 
+export class TryLogout implements Action {
+  readonly type: string = TRY_LOGOUT;
+}
+
 export class Logout implements Action {
   readonly type: string = LOGOUT;
+}
+
+export class TryGetToken implements Action {
+  readonly type: string = TRY_GET_TOKEN;
 }
 
 export type AuthActions = Signup |
@@ -44,4 +56,6 @@ export type AuthActions = Signup |
   StoredTokenIsValid |
   StoredTokenIsInvalid |
   TrySignin |
-  TrySignup;
+  TrySignup |
+  TryLogout |
+  TryGetToken;

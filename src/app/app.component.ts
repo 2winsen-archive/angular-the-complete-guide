@@ -1,9 +1,11 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
 import * as firebase from 'firebase';
 
-import { AuthService } from './auth/auth.service';
+import * as AuthActions from './auth/store/auth.actions';
 import { Configs } from './configs';
+import * as fromApp from './store/app.reducers';
 
 
 @Component({
@@ -14,7 +16,7 @@ import { Configs } from './configs';
 export class AppComponent implements OnInit {
 
   constructor(
-    private authService: AuthService
+    private store: Store<fromApp.AppState>
   ) {}
 
   ngOnInit(): void {
@@ -22,6 +24,6 @@ export class AppComponent implements OnInit {
       apiKey: Configs.FIREBASE_API_KEY,
       authDomain: Configs.FIREBASE_AUTH_DOMAIN
     });
-    this.authService.getToken();
+    this.store.dispatch(new AuthActions.TryGetToken());
   }
 }

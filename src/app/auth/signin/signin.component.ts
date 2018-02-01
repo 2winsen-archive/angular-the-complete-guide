@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import * as fromApp from './../../store/app.reducers';
-import { AuthService } from './../auth.service';
 import * as AuthActions from './../store/auth.actions';
 
 @Component({
@@ -16,7 +15,6 @@ export class SigninComponent implements OnInit {
   error = '';
 
   constructor(
-    private authService: AuthService,
     private router: Router,
     private store: Store<fromApp.AppState>
   ) { }
