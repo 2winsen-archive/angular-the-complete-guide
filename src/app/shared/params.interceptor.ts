@@ -1,5 +1,5 @@
 import 'rxjs/add/observable/fromPromise';
-import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/switchMap';
 
 import {
   HttpHandler,
@@ -24,7 +24,7 @@ export class ParamsInterceptor implements HttpInterceptor {
     : Observable<HttpSentEvent | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any>> {
     console.log('intercepted!', req);
     return Observable.fromPromise(this.authService.getToken())
-      .mergeMap((token: string) => {
+      .switchMap((token: string) => {
         const clonedReq = req.clone({
           params: req.params.set('auth', token)
         });

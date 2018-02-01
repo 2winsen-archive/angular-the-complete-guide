@@ -1,10 +1,16 @@
 import { Action } from '@ngrx/store';
 
+export const TRY_SIGNUP = 'TRY_SIGNUP';
 export const SIGNUP = 'SIGNUP';
 export const SIGNIN = 'SIGNIN';
 export const LOGOUT = 'LOGOUT';
 export const STORED_TOKEN_IS_VALID = 'STORED_TOKEN_IS_VALID';
 export const STORED_TOKEN_IS_INVALID = 'STORED_TOKEN_IS_INVALID';
+
+export class TrySignup implements Action {
+  readonly type: string = TRY_SIGNUP;
+  constructor(public payload: { username: string, password: string }) { }
+}
 
 export class Signup implements Action {
   readonly type: string = SIGNUP;
