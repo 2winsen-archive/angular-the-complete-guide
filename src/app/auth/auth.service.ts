@@ -33,7 +33,7 @@ export class AuthService {
       firebase.auth().onAuthStateChanged((currentUser: firebase.User) => {
         if (currentUser) {
           this.store.dispatch(new AuthActions.StoredTokenIsValid());
-          resolve(currentUser.getToken());
+          resolve(currentUser.getIdToken());
         } else {
           this.store.dispatch(new AuthActions.StoredTokenIsInvalid());
           resolve(null);
