@@ -1,6 +1,7 @@
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
 
@@ -34,21 +35,19 @@ export class AuthEffects {
     .switchMap(() => Observable.create((observer: Observer<any>) => {
       firebase.auth().onAuthStateChanged((currentUser: firebase.User) => {
         if (currentUser) {
-          observer.next(currentUser);
+          Observable.of(currentUser)
+            .switchMap((user: firebase.User) => Observable.fromPromise(user.getIdToken()))
+            .do((token: string) => this.router.navigate(['/']))
+            .do((token: string) => observer.next({
+              type: AuthActions.SIGNIN,
+              payload: token
+            }))
+            .subscribe();
         } else {
-          observer.error('no current user');
+          observer.next(this.failedToGetCurentUser());
         }
       });
-    }))
-    .switchMap((currentUser: firebase.User) => Observable.fromPromise(currentUser.getIdToken()))
-    .map((token: string) => {
-      this.router.navigate(['/']);
-      return {
-        type: AuthActions.SIGNIN,
-        payload: token
-      };
-    })
-    .catch(error => this.failedToGetCurentUser());
+    }));
 
   @Effect()
   logout = this.actions$
@@ -67,20 +66,18 @@ export class AuthEffects {
     .switchMap(() => Observable.create((observer: Observer<any>) =>
       firebase.auth().onAuthStateChanged((currentUser: firebase.User) => {
         if (currentUser) {
-          observer.next(currentUser);
+          Observable.of(currentUser)
+            .switchMap((user: firebase.User) => Observable.fromPromise(user.getIdToken()))
+            .do((token: string) => observer.next({
+              type: AuthActions.STORED_TOKEN_IS_VALID,
+              payload: token
+            }))
+            .subscribe();
         } else {
-          observer.error('no current user');
+          observer.next(this.failedToGetCurentUser());
         }
       })
-    ))
-    .switchMap((currentUser: firebase.User) => Observable.fromPromise(currentUser.getIdToken()))
-    .map((token: string) => {
-      return {
-        type: AuthActions.STORED_TOKEN_IS_VALID,
-        payload: token
-      };
-    })
-    .catch(error => this.failedToGetCurentUser());
+    ));
 
   constructor(
     private actions$: Actions,
@@ -89,8 +86,8 @@ export class AuthEffects {
 
   failedToGetCurentUser() {
     this.router.navigate(['/signin']);
-    return Observable.of({
+    return {
       type: AuthActions.STORED_TOKEN_IS_INVALID,
-    });
+    };
   }
 }

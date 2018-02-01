@@ -29,6 +29,7 @@ export class ParamsInterceptor implements HttpInterceptor {
     console.log('intercepted!', req);
     return this.store.select('auth')
       .map((state: fromAuth.State) => state.token)
+      .filter((token: string) => !!token)
       .switchMap((token: string) => {
         const clonedReq = req.clone({
           params: req.params.set('auth', token)
