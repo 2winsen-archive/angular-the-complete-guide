@@ -29,12 +29,6 @@ export class SignupComponent implements OnInit {
       username: email,
       password: password
     }));
-    // this.authService.signupUser(email, password)
-    //   .then(() => this.router.navigate(['/']))
-    //   .catch(error => {
-    //     this.error = error,
-    //       setTimeout(() => this.error = '', 3000);
-    //   });
   }
 
 }

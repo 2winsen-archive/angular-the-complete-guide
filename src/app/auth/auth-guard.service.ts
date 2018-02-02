@@ -1,3 +1,5 @@
+import 'rxjs/add/operator/first';
+
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -16,6 +18,7 @@ export class AuthGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> | Promise<boolean> {
     return this.store.select('auth')
+      .first()
       .map((authState: fromAuth.State) => authState.authenticated)
       .do((authenicated: boolean) => {
         if (!authenicated) {

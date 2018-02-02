@@ -11,7 +11,7 @@
           <input type="password" name="password" id="password" ngModel class="form-control">
         </div>
         <button type="submit" class="btn btn-primary" [disabled]="f.invalid">Sign In</button>
-        <div *ngIf="error" style="color: red; font-weight: bold">{{error}}</div>
+        <div *ngIf="(authState$ | async).signInError" style="color: red; font-weight: bold">{{(authState$ | async).signInError}}</div>
       </form>
     </div>
   </div>

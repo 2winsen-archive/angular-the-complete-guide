@@ -31,23 +31,16 @@ export class AuthEffects {
     .ofType(AuthActions.TRY_SIGNIN)
     .map((action: AuthActions.TrySignin) => action.payload)
     .switchMap((payload: { username: string, password: string }) =>
-      Observable.fromPromise(firebase.auth().signInWithEmailAndPassword(payload.username, payload.password)))
-    .switchMap(() => Observable.create((observer: Observer<any>) => {
-      firebase.auth().onAuthStateChanged((currentUser: firebase.User) => {
-        if (currentUser) {
-          Observable.of(currentUser)
-            .switchMap((user: firebase.User) => Observable.fromPromise(user.getIdToken()))
-            .do((token: string) => this.router.navigate(['/']))
-            .do((token: string) => observer.next({
-              type: AuthActions.SIGNIN,
-              payload: token
-            }))
-            .subscribe();
-        } else {
-          observer.next(this.failedToGetCurentUser());
-        }
-      });
-    }));
+      Observable.fromPromise(firebase.auth().signInWithEmailAndPassword(payload.username, payload.password))
+        .do(() => this.router.navigate(['/']))
+        .map(() => ({
+          type: AuthActions.TRY_GET_TOKEN
+        }))
+        .catch((error: Error) => Observable.of({
+          type: AuthActions.SIGNIN_ERROR,
+          payload: `Oops, a nasty sign in error - ${error.message}`
+        }))
+    );
 
   @Effect()
   logout = this.actions$
@@ -66,28 +59,28 @@ export class AuthEffects {
     .switchMap(() => Observable.create((observer: Observer<any>) =>
       firebase.auth().onAuthStateChanged((currentUser: firebase.User) => {
         if (currentUser) {
-          Observable.of(currentUser)
-            .switchMap((user: firebase.User) => Observable.fromPromise(user.getIdToken()))
-            .do((token: string) => observer.next({
-              type: AuthActions.STORED_TOKEN_IS_VALID,
-              payload: token
-            }))
+          Observable.fromPromise(currentUser.getIdToken())
+            .do((token: string) => observer.next(token))
             .subscribe();
         } else {
-          observer.next(this.failedToGetCurentUser());
+          observer.error('error');
         }
       })
-    ));
+    )
+      .map((token: string) => ({
+        type: AuthActions.SIGNIN,
+        payload: token
+      }))
+      .catch(() => {
+        this.router.navigate(['/signin']);
+        return Observable.of({
+          type: AuthActions.STORED_TOKEN_IS_INVALID
+        });
+      })
+    );
 
   constructor(
     private actions$: Actions,
     private router: Router
   ) { }
-
-  failedToGetCurentUser() {
-    this.router.navigate(['/signin']);
-    return {
-      type: AuthActions.STORED_TOKEN_IS_INVALID,
-    };
-  }
 }

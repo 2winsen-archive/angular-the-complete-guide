@@ -1,5 +1,6 @@
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/first';
 
 import {
   HttpHandler,
@@ -28,8 +29,8 @@ export class ParamsInterceptor implements HttpInterceptor {
     : Observable<HttpSentEvent | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any>> {
     console.log('intercepted!', req);
     return this.store.select('auth')
+      .first()
       .map((state: fromAuth.State) => state.token)
-      .filter((token: string) => !!token)
       .switchMap((token: string) => {
         const clonedReq = req.clone({
           params: req.params.set('auth', token)

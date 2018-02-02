@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
 
+import * as fromAuth from './../../auth/store/auth.reducers';
 import * as fromApp from './../../store/app.reducers';
 import * as AuthActions from './../store/auth.actions';
 
@@ -12,7 +14,7 @@ import * as AuthActions from './../store/auth.actions';
   styleUrls: ['./signin.component.css']
 })
 export class SigninComponent implements OnInit {
-  error = '';
+  authState$: Observable<fromAuth.State>;
 
   constructor(
     private router: Router,
@@ -20,6 +22,7 @@ export class SigninComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.authState$ = this.store.select('auth');
   }
 
   onSignin(form: NgForm) {
@@ -29,12 +32,6 @@ export class SigninComponent implements OnInit {
       username: email,
       password: password
     }));
-    // this.authService.signinUser(email, password)
-    //   .then(response => this.router.navigate(['/']))
-    //   .catch(error => {
-    //     this.error = error,
-    //     setTimeout(() => this.error = '', 3000);
-    //   });
   }
 
 }
