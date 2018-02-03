@@ -1,4 +1,5 @@
 import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/filter';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -6,8 +7,6 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { RecipeService } from '../../recipes/recipe.service';
-import { DataStorageService } from '../../shared/data-storage.service';
 import * as AuthActions from './../../auth/store/auth.actions';
 import * as fromAuth from './../../auth/store/auth.reducers';
 import * as RecipeActions from './../../recipes/store/recipe.action';
@@ -24,8 +23,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[];
 
   constructor(
-    private dataStorageService: DataStorageService,
-    private recipeService: RecipeService,
     private router: Router,
     private store: Store<fromRecipe.FeatureState>,
   ) { }
