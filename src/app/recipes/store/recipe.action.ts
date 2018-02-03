@@ -8,6 +8,8 @@ export const UPDATE_RECIPE = 'UPDATE_RECIPE';
 export const DELETE_RECIPE = 'DELETE_RECIPE';
 export const STORE_RECIPES = 'STORE_RECIPES';
 export const FETCH_RECIPES = 'FETCH_RECIPES';
+export const FETCH_RECIPES_ERROR = 'FETCH_RECIPES_ERROR';
+export const FETCH_RECIPES_SUCCESS = 'FETCH_RECIPES_SUCCESS';
 
 export class SetRecipes implements Action {
   readonly type: string = SET_RECIPES;
@@ -37,9 +39,19 @@ export class FetchRecipes implements Action {
   readonly type: string = FETCH_RECIPES;
 }
 
+export class FetchRecipesError implements Action {
+  readonly type: string = FETCH_RECIPES_ERROR;
+}
+
+export class FetchRecipesSuccess implements Action {
+  readonly type: string = FETCH_RECIPES_SUCCESS;
+}
+
 export type RecipeActions = SetRecipes |
   AddRecipe |
   UpdateRecipe |
   DeleteRecipe |
   StoreRecipes |
-  FetchRecipes;
+  FetchRecipes |
+  FetchRecipesError |
+  FetchRecipesSuccess;

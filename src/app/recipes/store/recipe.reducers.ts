@@ -9,6 +9,8 @@ export interface FeatureState extends fromApp.AppState {
 
 export interface State {
   recipes: Recipe[];
+  error: string;
+  success: string;
 }
 
 const initialState: State = {
@@ -25,7 +27,9 @@ const initialState: State = {
       'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/NYC-Diner-Bacon-Cheeseburger.jpg/1024px-NYC-Diner-Bacon-Cheeseburger.jpg',
       [new Ingredient('Buns', 2), new Ingredient('Meat', 1)]
     )
-  ]
+  ],
+  error: null,
+  success: null
 };
 
 export function recipeReducer(state = initialState, action: RecipeActions.RecipeActions): State {
@@ -57,6 +61,10 @@ export function recipeReducer(state = initialState, action: RecipeActions.Recipe
           return index !== (<RecipeActions.DeleteRecipe>action).payload;
         })
       };
+    case RecipeActions.FETCH_RECIPES_ERROR:
+      return { ...state, error: 'error' };
+    case RecipeActions.FETCH_RECIPES_SUCCESS:
+      return { ...state, success: 'success' };
     default:
       return state;
   }
