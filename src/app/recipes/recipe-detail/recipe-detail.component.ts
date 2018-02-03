@@ -1,3 +1,6 @@
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/first';
+
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
