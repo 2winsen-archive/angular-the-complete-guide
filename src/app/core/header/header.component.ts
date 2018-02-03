@@ -5,11 +5,11 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { Recipe } from '../../recipes/recipe.model';
 import { RecipeService } from '../../recipes/recipe.service';
 import { DataStorageService } from '../../shared/data-storage.service';
 import * as AuthActions from './../../auth/store/auth.actions';
 import * as fromAuth from './../../auth/store/auth.reducers';
+import * as RecipeActions from './../../recipes/store/recipe.action';
 import * as fromApp from './../../store/app.reducers';
 
 @Component({
@@ -60,12 +60,14 @@ export class HeaderComponent implements OnInit {
   }
 
   onFetchData() {
-    this.dataStorageService.getRecipes()
-      .do((recipes: Recipe[]) => this.recipeService.setRecipes(recipes))
-      .subscribe(() => this.success(), (error) => {
-        console.log(error);
-        this.error();
-      });
+    this.store.dispatch(new RecipeActions.FetchRecipes());
+
+    // this.dataStorageService.getRecipes()
+    //   .do((recipes: Recipe[]) => this.recipeService.setRecipes(recipes))
+    //   .subscribe(() => this.success(), (error) => {
+    //     console.log(error);
+    //     this.error();
+    //   });
   }
 
   onLogout() {

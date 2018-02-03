@@ -22,10 +22,6 @@ export class RecipeService {
   ];
   constructor() { }
 
-  getRecipe(index: number) {
-    return { ...this.recipes[index] };
-  }
-
   getRecipes() {
     return this.recipes.slice();
   }
@@ -35,22 +31,7 @@ export class RecipeService {
     this.changed();
   }
 
-  addRecipe(newRecipe: Recipe) {
-    this.recipes.push(newRecipe);
-    this.changed();
-  }
-
   private changed() {
     this.recipesChanged.next(this.getRecipes());
-  }
-
-  updateRecipe(index: number, newRecipe: Recipe) {
-    this.recipes[index] = newRecipe;
-    this.changed();
-  }
-
-  deleteRecipe(index: number) {
-    this.recipes.splice(index, 1);
-    this.changed();
   }
 }
