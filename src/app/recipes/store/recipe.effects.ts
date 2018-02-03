@@ -5,7 +5,6 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/withLatestFrom';
 
 import { HttpClient } from '@angular/common/http';
-import { HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -47,17 +46,23 @@ export class RecipeEffects {
       }))
     );
 
-  @Effect({
-    dispatch: false
-  })
+  @Effect()
   recipesStore = this.actions$
     .ofType(RecipeActions.STORE_RECIPES)
     .withLatestFrom(this.store.select('recipes'))
-    .switchMap(([action, state]) => {
-      return this.httpClient.request(
-        new HttpRequest('PUT', `${Configs.FIREBASE_URL}/recipes.json`, state.recipes, { reportProgress: true })
-      );
-    });
+    .switchMap(([action, state]) => this.httpClient.request('PUT', `${Configs.FIREBASE_URL}/recipes.json`, {
+      body: state.recipes,
+      observe: 'body',
+      responseType: 'json'
+    })
+      .map(() => ({
+        type: RecipeActions.FETCH_RECIPES_SUCCESS
+      }))
+      .catch((error: Error) => Observable.of({
+        type: RecipeActions.FETCH_RECIPES_ERROR,
+        payload: error.message
+      }))
+    );
 
   constructor(
     private actions$: Actions,

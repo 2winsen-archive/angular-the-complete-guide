@@ -17,7 +17,7 @@ const initialState: State = {
   recipes: [
     new Recipe(
       'Tasty Schnitzel',
-      'A super-tasty schnitze - just awesome!',
+      'A super-tasty schnitzel - just awesome!',
       'https://upload.wikimedia.org/wikipedia/commons/0/0c/Milanesa.jpg',
       [new Ingredient('Meat', 1), new Ingredient('Lemon', 1)]
     ),
@@ -70,9 +70,9 @@ export function recipeReducer(state = initialState, action: RecipeActions.Recipe
         success: null
       };
     case RecipeActions.FETCH_RECIPES_ERROR:
-      return { ...state, error: 'error' };
+      return { ...state, error: 'error', success: null };
     case RecipeActions.FETCH_RECIPES_SUCCESS:
-      return { ...state, success: 'success' };
+      return { ...state, success: 'success', error: null };
     default:
       return state;
   }
