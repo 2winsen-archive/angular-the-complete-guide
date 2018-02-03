@@ -37,12 +37,16 @@ export function recipeReducer(state = initialState, action: RecipeActions.Recipe
     case RecipeActions.SET_RECIPES:
       return {
         ...state,
-        recipes: [...(<RecipeActions.SetRecipes>action).payload]
+        recipes: [...(<RecipeActions.SetRecipes>action).payload],
+        error: null,
+        success: null
       };
     case RecipeActions.ADD_RECIPE:
       return {
         ...state,
-        recipes: [...state.recipes, (<RecipeActions.AddRecipe>action).payload]
+        recipes: [...state.recipes, (<RecipeActions.AddRecipe>action).payload],
+        error: null,
+        success: null
       };
     case RecipeActions.UPDATE_RECIPE:
       return {
@@ -52,14 +56,18 @@ export function recipeReducer(state = initialState, action: RecipeActions.Recipe
             return (<RecipeActions.UpdateRecipe>action).payload.updatedRecipe;
           }
           return r;
-        })
+        }),
+        error: null,
+        success: null
       };
     case RecipeActions.DELETE_RECIPE:
       return {
         ...state,
         recipes: state.recipes.filter((r, index) => {
           return index !== (<RecipeActions.DeleteRecipe>action).payload;
-        })
+        }),
+        error: null,
+        success: null
       };
     case RecipeActions.FETCH_RECIPES_ERROR:
       return { ...state, error: 'error' };

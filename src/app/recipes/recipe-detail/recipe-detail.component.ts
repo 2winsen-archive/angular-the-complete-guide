@@ -36,8 +36,8 @@ export class RecipeDetailComponent implements OnInit {
           this.recipe = recipeState.recipes[this.recipeIndex];
         })
         .do(() => {
-          if (!this.recipe.name) {
-            this.router.navigate(['/']);
+          if (!this.recipe || !this.recipe.name) {
+            this.router.navigate(['..'], { relativeTo: this.route });
           }
         })
         .subscribe();

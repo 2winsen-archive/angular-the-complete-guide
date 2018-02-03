@@ -21,18 +21,4 @@ export class DataStorageService {
     );
   }
 
-  getRecipes(): Observable<Recipe[]> {
-    return this.httpClient.get<Recipe[]>(`${Configs.FIREBASE_URL}/recipes.json`)
-      .filter((recipes) => !!recipes)
-      .map((recipes) =>
-        recipes
-          .reduce((acc, curr) => {
-            if (!curr.ingredients) {
-              curr.ingredients = [];
-            }
-            return acc.concat(curr);
-          }, [])
-      );
-  }
-
 }
