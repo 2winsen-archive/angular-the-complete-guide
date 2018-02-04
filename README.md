@@ -15,6 +15,10 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
+## Build with Server Side Rendering (SSR)
+Run `npm run buil:ssr` for production build of the project with server rendering, artifacts will be locater in dist and dist-server directories accordingly.
+Run node server.js to run express server which allows ngUnversal server side rendering
+
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
