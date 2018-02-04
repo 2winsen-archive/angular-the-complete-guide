@@ -5,10 +5,9 @@
       <button class="btn btn-primary" (click)="onAnimate()">Animate!</button>
       <button class="btn btn-primary" (click)="onShrink()">Shrink!</button>
       <hr>
-      <div 
-        style="height: 100px; width: 100px"
-        [@divState]="state"
-      ></div>
+      <div style="height: 100px; width: 100px" [@divState]="state"></div>
+      <br>
+      <div style="height: 100px; width: 100px" [@wildState]="wildState"></div>
     </div>
   </div>
   <hr>
@@ -18,7 +17,7 @@
       <button class="btn btn-primary" (click)="onAdd(input.value)">Add Item!</button>
       <hr>
       <ul class="list-group">
-        <li class="list-group-item" (click)="onDelete(item)" *ngFor="let item of list">
+        <li [@list1] class="list-group-item" (click)="onDelete(item)" *ngFor="let item of list">
           {{ item }}
         </li>
       </ul>
