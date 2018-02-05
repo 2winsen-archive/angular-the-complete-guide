@@ -122,4 +122,12 @@ export class AnimationsComponent {
   onShrink() {
     this.wildState = 'shrunken';
   }
+
+  animatimationStarted(event) {
+    console.log(event);
+  }
+
+  animatimationDone(event) {
+    console.log(event);
+  }
 }
