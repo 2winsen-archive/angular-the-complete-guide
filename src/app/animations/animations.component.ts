@@ -1,4 +1,4 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { animate, state, style, transition, trigger, keyframes } from '@angular/animations';
 import { Component } from '@angular/core';
 
 @Component({
@@ -56,6 +56,36 @@ import { Component } from '@angular/core';
           opacity: 0,
           transform: 'translateX(100px)'
         }))
+      ])
+    ]),
+    trigger('list2', [
+      state('in', style({
+        opacity: 1,
+        transform: 'translateX(0)'
+      })),
+      transition('void => *', [
+        animate(1000, keyframes([
+          style({
+            opacity: 0,
+            transform: 'translateX(-100px)',
+            offset: 0
+          }),
+          style({
+            opacity: 0.5,
+            transform: 'translateX(-50px)',
+            offset: 0.3
+          }),
+          style({
+            opacity: 1,
+            transform: 'translateX(-20px)',
+            offset: 0.8
+          }),
+          style({
+            opacity: 1,
+            transform: 'translateX(0px)',
+            offset: 1
+          }),
+        ]))
       ])
     ])
   ]
